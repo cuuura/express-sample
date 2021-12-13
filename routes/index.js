@@ -5,7 +5,7 @@ var router = express.Router();
 //     req.query
 // })
 
-router.use('/birds', require('./birds'));
+// router.use('/birds', require('./birds'));
 router.use('/users', require('./users'));
 
 module.exports = router;

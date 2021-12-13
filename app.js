@@ -1,12 +1,50 @@
-const http = require('http');
 const express = require('express');
 const app = express();
+const http = require('http');
+
 const host = '0.0.0.0'
 const port = 3000
 
+// 템플릿 엔진
+app.set('view engine', 'ejs');
+
+const posts = [
+
+    {
+        id: 1,
+        author: 'John',
+        title: 'Templating with pug',
+        body: 'Blog post 1'
+    },
+
+    {
+        id: 2,
+        author: 'Peter',
+        title: 'React: Starting from the Bottom',
+        body: 'Blog post 2'
+    },
+
+    {
+        id: 3,
+        author: 'Violet',
+        title: 'Node.js Streams',
+        body: 'Blog post 3'
+    },
+
+    {
+        id: 4,
+        author: 'Condy',
+        title: 'Node.js Events',
+        body: 'Blog post 4'
+    }
+
+]
+
 app.get('/', (req, res) => {
-    res.send('Hello World!');
-})
+    res.render('index', {title: "Express", posts: posts});
+});
+
+app.use(express.static('public'));
 
 // var birds = require('./routes/birds');
 
