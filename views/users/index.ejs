@@ -8,52 +8,38 @@
     <title>유저 예제</title>
 </head>
 <body>
-<div class="container">
-    <div class="row row-cols-3 row-cols-lg-3 g-2 g-lg-3">
+<div class="container-fluid align-item-center">
+    <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <div class="col"></div>
         <div class="col">
-            <div class="p-3 border bg-light"></div>
+        <table class="table">
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Height</th>
+                <th scope="col">Date</th>
+            </tr>
+            <% users.forEach(user => { %>
+                <tr>
+                    <th scope="row"><%=user.id%></th>
+                    <td><%=user.name%></td>
+                    <td><%=user.height%></td>
+                    <td><%=user.date%></td>
+                </tr>
+            <% }); %>
+        </table>
         </div>
-        <div class="col">
-            <div class="p-3 border bg-light"></div>
-        </div>
-        <div class="col">
-            <div class="p-3 border bg-light"></div>
-        </div>
-        <div class="col">
-            <div class="p-3 border bg-light"></div>
-        </div>
-        <div class="col">
-            <div class="p-3 border bg-light">
-                <table class="table">
-                    <tr>
-                        <th scope="col">id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Height</th>
-                        <th scope="col">Date</th>
-                    </tr>
-                    <% users.forEach(user => { %>
-                        <tr>
-                            <th scope="row"><%=user.id%></th>
-                            <td><%=user.name%></td>
-                            <td><%=user.height%></td>
-                            <td><%=user.date%></td>
-                        </tr>
-                    <% }); %>
-                </table>
-            </div>
-        </div>
-        <div class="col">
-            <div class="p-3 border bg-light"></div>
-        </div>
-        <div class="col">
-            <div class="p-3 border bg-light"></div>
-        </div>
-        <div class="col">
-            <div class="p-3 border bg-light"></div>
-        </div>
-        <div class="col">
-            <div class="p-3 border bg-light"></div>
-        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
     </div>
 </div>
 </body>
