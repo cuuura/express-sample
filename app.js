@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const http = require('http');
+const bodyParser = require('body-parser');
 
 const host = '0.0.0.0'
 const port = 3000
@@ -44,15 +45,15 @@ app.get('/', (req, res) => {
     res.render('index', {title: "Express", posts: posts});
 });
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use(express.static('public'));
 
 // var birds = require('./routes/birds');
 
 app.use('/', require('./routes'));
 
-// app.listen(port, () => {
-//     console.log(`Example app listening at http://localhost:${port}`)
-// })
 http.createServer(app).listen(port, host, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })

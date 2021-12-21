@@ -42,7 +42,7 @@ router.post("/", (req, res) => {
         profile: req.body.profile
     }
 
-    console.log(param.toString());
+    console.log('user_name : ', req.body.user_name);
 
     userRepo.insert(param, (errCode, results) => {
         if(errCode != "success") {
@@ -55,9 +55,14 @@ router.post("/", (req, res) => {
 
 // update
 router.put("/:id", (req, res) => {
-    var id = req.params.id;
+    var param = {
+        id: req.params.id,
+        user_name: req.body.user_name,
+        height: req.body.height,
+        profile: req.body.profile
+    }
 
-    userRepo.update(id, (errCode, results) => {
+    userRepo.update(param, (errCode, results) => {
         if(errCode != "success") {
             res.send(errCode);
         }
@@ -68,14 +73,16 @@ router.put("/:id", (req, res) => {
 
 // delete
 router.delete("/:id", (req, res) => {
-    var id = req.params.id;
+    var param = {
+        id: req.params.id
+    };
 
-    userRepo.delete(id, (errCode, results) => {
+    userRepo.delete({id:req.params.id}, (errCode, results) => {
         if(errCode != "success") {
             res.send(errCode);
+        } else {
+            res.send(errCode);
         }
-
-        res.send(errCode);
     });
 });
 

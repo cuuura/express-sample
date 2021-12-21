@@ -1,3 +1,4 @@
+const res = require("express/lib/response");
 var db = require("./dbConnector");
 
 function makewhere(param) {
@@ -6,11 +7,8 @@ function makewhere(param) {
     if("id" in param && param.id != null && param.id != "") {
         whereStr += "AND id = :id ";
     }
-    if("name" in param && param.name != null && param.name != "") {
-        whereStr += "AND name = :name ";
-    }
-    if("height" in param && param.height != null && param.height != "") {
-        whereStr += "AND height = :height ";
+    if("user_name" in param && param.name != null && param.name != "") {
+        whereStr += "AND name = :user_name ";
     }
     if(whereStr.length > 0) whereStr = "WHERE " + whereStr.substr(3);
 
@@ -20,7 +18,7 @@ function makewhere(param) {
 module.exports = {
     selectList: function(param, done) {
         var sql = "SELECT * \
-                     FROM user"
+                     FROM user";
             sql+= makewhere(param);
             sql+= " ORDER BY id desc";
 
@@ -50,20 +48,22 @@ module.exports = {
                    ( \
                         name, \
                         height, \
-                        profile \
+                        profile, \
+                        date \
                    ) \
                    VALUES \
                    ( \
                         :user_name, \
                         :height, \
-                        :profile \
+                        :profile, \
+                        NOW() \
                    )";
 
         console.log(sql);
 
         db.execute(sql, param, (errCode) => {
             if(errCode == "success") {
-                db.selectOne("SELECT * as id FROM user WHERE id = (SELECT max(id) FROM user)", {}, function(errCode, results) {
+                db.selectOne("SELECT * FROM user", param, function(errCode, results) {
                     done(errCode, results);
                 })
             } else {
@@ -72,7 +72,22 @@ module.exports = {
         });
     },
     update: function(param, done) {
-        var sql;
+        var sql = "UPDATE user SET ";
+        if("user_name" in param && param.user_name != null && param.user_name != "")
+        {
+            sql+= "name = :user_name, ";
+        }
+        if("height" in param && param.height != null && param.height != "")
+        {
+            sql+= "height = :height, ";
+        }
+        if("profile" in param && param.profile != null && param.profile != "")
+        {
+            sql+= "profile = :profile, ";
+        }
+            sql+= "date = NOW()"
+            sql+= " ";
+            sql+= "WHERE id = :id";
 
         console.log(sql);
 
@@ -85,11 +100,15 @@ module.exports = {
 
                     done(errCode, results);
                 });
+            } else {
+                done(errCode, null);
             }
         });
     },
     delete: function(param, done) {
-        var sql;
+        var sql = "DELETE \
+                     FROM user \
+                    WHERE id = :id";
 
         console.log(sql);
 
@@ -98,10 +117,12 @@ module.exports = {
                 db.selectOne("SELECT * FROM user WHERE id = :id", param, (errCode, results) => {
                     if(errCode != "success") {
                         done(errCode, null);
+                    } else {
+                        done(errCode, results);
                     }
-
-                    done(errCode, results);
                 });
+            } else {
+                done(errCode, null);
             }
         })
     }
