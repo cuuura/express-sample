@@ -54,6 +54,9 @@ app.use(express.static('public'));
 
 app.use('/', require('./routes'));
 
+app.use((err, req, res, next) => {
+    // 오류 핸들러
+});
 http.createServer(app).listen(port, host, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })

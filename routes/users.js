@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
         }
 
         res.render("users/index", {users:results})
-        // res.send(results);
+        res.send(results);
     });
 })
 
@@ -65,9 +65,9 @@ router.put("/:id", (req, res) => {
     userRepo.update(param, (errCode, results) => {
         if(errCode != "success") {
             res.send(errCode);
+        } else {
+            res.send(errCode);
         }
-
-        res.send(results);
     });
 })
 
@@ -77,13 +77,22 @@ router.delete("/:id", (req, res) => {
         id: req.params.id
     };
 
-    userRepo.delete({id:req.params.id}, (errCode, results) => {
+    userRepo.delete(param, (errCode, results) => {
         if(errCode != "success") {
             res.send(errCode);
         } else {
             res.send(errCode);
         }
     });
+});
+
+// user List 
+router.get("views/users/", (req, res) => {
+    const param = {
+        menuTitle: "사용자 목록"
+    }
+    
+    res.render("users/index", param)
 });
 
 module.exports = router;

@@ -1,4 +1,3 @@
-const res = require("express/lib/response");
 var db = require("./dbConnector");
 
 function makewhere(param) {
