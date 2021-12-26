@@ -1,7 +1,7 @@
 var db = require("./dbConnector");
 
 function makewhere(param) {
-    var whereStr = " ";
+    var whereStr = "";
 
     if("board_id" in param && param.board_id != null param.board_id != "") {
         whereStr += "AND board_id = :board_id";
