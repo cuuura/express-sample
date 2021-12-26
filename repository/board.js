@@ -59,7 +59,22 @@ module.exports = {
     },
 
     insert: function (param, done) {
-        var sql = "";
+        var sql = "INSERT INTO tb_board \
+                   (\
+                       title, \
+                       user_id, \
+                       contents, \
+                       use_fg, \
+                       edited_at\
+                   )\
+                   VALUES\
+                   (\
+                       :title, \
+                       :user_id, \
+                       :contents, \
+                       :use_fg, \
+                       NOW()\
+                   )";
 
         db.execute(sql, param, (err, results) => {
             if(err != "success") {
@@ -73,20 +88,37 @@ module.exports = {
     },
 
     update: function(param, done) {
-        var sql = "";
+        var sql = "UPDATE tb_board\
+                      SET title     = :title\
+                        , contents  = :contents\
+                        , use_fg    = :use_fg\
+                        , edited_at = NOW()\
+                    WHERE board_id = :board_id";
+
+        console.log(sql);
 
         db.execute(sql, param, (err, results) => {
-
+            if(err == "success") {
+                this.selectOne(param, (err, results) => {
+                    if(err != "success") {
+                        done(err, null);
+                    } else {
+                        done(err, results);
+                    }
+                });
+            } else {
+                done(err, null);
+            }
         });
     },
 
     delete: function (param, done) {
-        var sql = "";
+        var sql = "DELETE\
+                     FROM tb_board\
+                    WHERE board_id = :board_id";
 
-        db.execute(sql, param, (err, results) => {
-            if(err != "success") {
-                
-            }
+        db.execute(sql, param, (err) => {
+            done(err, null);
         });
     }
 }
