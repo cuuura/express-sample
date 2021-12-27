@@ -16,7 +16,7 @@
 <hr />
 <a href="#" class="btn btn-defaul pull-right">글쓰기</a>
 <div class="text-center">
-    <ul class="pagination">
+    <ul class="pagination justify-content-center">
     </ul>
 </div>
 </div>
@@ -34,6 +34,27 @@ $("document").ready(function(){
         json["list"].forEach(function (data) {
             $("<tr><td class='text-center'>" + data.board_id + "</td><td class='text-center'>" + data.title + "</td><td class='text-center'>" + data.name + "</td><td class='text-center'>" + data.edited_at + "</td>").appendTo("tbody");
         });
+
+        var currentPage = json["current_page"];
+        var pageStart = json["page_start"];
+        var pageEnd = json["page_end"];
+
+        for(var idx = pageStart; idx <= pageEnd; idx++) {
+            if(idx == pageStart) {
+                $("<li class='page-item'><a class='page-link' href='#'>Previous</a></li>").appendTo(".pagination");
+            }
+            var pageNum = idx + 1;
+
+            if(idx == currentPage) {
+                $("<li class='page-item active'><a class='page-link' href='#'>" + pageNum + "</a></li>").appendTo(".pagination");
+            } else {
+                $("<li class='page-item'><a class='page-link' href='#'>" + pageNum + "</a></li>").appendTo(".pagination");
+            }
+
+            if(idx == pageEnd) {
+                $("<li class='page-item'><a class='page-link' href='#'>Next</a></li>").appendTo(".pagination"); 
+            }
+        }
     })
 });
 </script>
