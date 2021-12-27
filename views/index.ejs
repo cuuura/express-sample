@@ -24,14 +24,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="list-group">
-                <!-- 흐름 제어문 -->
-                <% posts.forEach((post) => { %>
-                    <a href="#" cass="list-group-item">
-                        <!-- 변수 값 출력 -->
-                        <h4 class="list-group_item-heading"><%= post.title %></h4>
-                        <p class="list-group-item-text"><%= post.author %></p>
-                    </a>
-                <% }) %>
+                <%- include('./board/index') %>
             </div>
         </div>
     </div>

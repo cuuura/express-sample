@@ -1,12 +1,15 @@
 const express = require("express");
-const router = express.Router();
+var router = express.Router();
 
 /**
  * board views
  */
 // get List
 router.get("/", (req, res) => {
-    var param = 
+    var param = {
+        menuTitle: "게시판"
+    };
+
     res.render("board/index", param);
 });
 
@@ -14,7 +17,9 @@ router.get("/", (req, res) => {
 router.get("/:board_id", (req, res) => {
     var param = {
         board_id: req.params.board_id
-    }
+    };
 
     res.render("board/contents", param);
 });
+
+module.exports = router;

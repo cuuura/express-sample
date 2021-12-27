@@ -9,6 +9,6 @@ var router = express.Router();
 router.use("/users", require("./users"));
 router.use("/board", require("./board"));
 
-router.use("/views/board", reauire("./views/board"));
+router.use("/views/board", require("./views/board"));
 
 module.exports = router;

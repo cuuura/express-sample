@@ -9,40 +9,40 @@ const port = 3000
 // 템플릿 엔진
 app.set('view engine', 'ejs');
 
-const posts = [
+// const posts = [
 
-    {
-        id: 1,
-        author: 'John',
-        title: 'Templating with pug',
-        body: 'Blog post 1'
-    },
+//     {
+//         id: 1,
+//         author: 'John',
+//         title: 'Templating with pug',
+//         body: 'Blog post 1'
+//     },
 
-    {
-        id: 2,
-        author: 'Peter',
-        title: 'React: Starting from the Bottom',
-        body: 'Blog post 2'
-    },
+//     {
+//         id: 2,
+//         author: 'Peter',
+//         title: 'React: Starting from the Bottom',
+//         body: 'Blog post 2'
+//     },
 
-    {
-        id: 3,
-        author: 'Violet',
-        title: 'Node.js Streams',
-        body: 'Blog post 3'
-    },
+//     {
+//         id: 3,
+//         author: 'Violet',
+//         title: 'Node.js Streams',
+//         body: 'Blog post 3'
+//     },
 
-    {
-        id: 4,
-        author: 'Condy',
-        title: 'Node.js Events',
-        body: 'Blog post 4'
-    }
+//     {
+//         id: 4,
+//         author: 'Condy',
+//         title: 'Node.js Events',
+//         body: 'Blog post 4'
+//     }
 
-]
+// ]
 
 app.get('/', (req, res) => {
-    res.render('index', {title: "Express", posts: posts});
+    res.render('index', {title: "Express"});
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -54,9 +54,11 @@ app.use(express.static('public'));
 
 app.use('/', require('./routes'));
 
+// app.use(function (err, req, res, next) {...});
 app.use((err, req, res, next) => {
     // 오류 핸들러
 });
+
 http.createServer(app).listen(port, host, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })

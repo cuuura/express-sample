@@ -13,25 +13,34 @@ const pool = mysql.createPool({
     user: "test_user",
     password: "test_user123",
     connectionLimit : 10
-})
+});
 
-function execquery(ysql, done) {
+function execquery(queryStr, done) {
     pool.getConnection((err, conn) => {
         var errCode = "return";
 
-        if(err) {
+        // if 에서 false 처리 되는것들
+        // ""
+        // 0
+        // false
+        if(err != null) {
             errCode = "pool error";
             console.log(err.message);
             done(errCode, null);
+
+            return;
         }
 
-        conn.query(ysql, (err, results) => {
+        // mysql -> pool -> conn -> query
+        // conn.query(ysql, function (err, results) {...})
+        conn.query(queryStr, (err, results) => {
+            // "SELECT board_id FROM t_board";
             var errCode = "return";
 
             if(err) {
                 errCode = "query error";
                 results = null;
-                console.log(err.message)
+                console.log(err.message);
             }
 
             done(errCode, results);
@@ -40,18 +49,18 @@ function execquery(ysql, done) {
 }
 
 module.exports = {
-    selectList: function(ysql, param, done) {
-        execquery( pstmt(ysql)(param), function (code, result) {
-            if(code != "return") {
+    selectList: function(queryStr, param, done) {
+        execquery(pstmt(queryStr)(param), function (resultCode, result) {
+            if(resultCode != "return") {
                 done("fail", []);
             } else {
                 done("success", result);
             }
         });
     },
-    selectOne: function(ysql, param, done) {
-        execquery(pstmt(ysql)(param), function (code, result) {
-            if(code != "return") {
+    selectOne: function(queryStr, param, done) {
+        execquery(pstmt(queryStr)(param), function (resultCode, /*Array*/result) {
+            if(resultCode != "return") {
                 done("fail", null);
             } else if(result == null || result.length < 1) {
                 done("none", null);
@@ -60,9 +69,9 @@ module.exports = {
             }
         })
     },
-    execute: function(ysql, param, done) {
-        execquery(pstmt(ysql)(param), function (code, result) {
-            if(code != "return") {
+    execute: function(queryStr, param, done) {
+        execquery(pstmt(queryStr)(param), function (resultCode, result) {
+            if(resultCode != "return") {
                 done("fail", 0);
             } else if(result == null || result.affectedRows < 1) {
                 done("none", 0);

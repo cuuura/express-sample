@@ -10,12 +10,14 @@ router.get("/", (req, res) => {
     var param = {
         board_id: req.query.board_id, 
         title: req.query.title,
-        contents: req.query.contents
+        contents: req.query.contents,
+        current_page: req.query.current_page,
+        page_size: req.query.page_size
     };
 
-    boardRepo.getList(param, (err, results) => {
-        if(err != "success") {
-            res.send(err);
+    boardRepo.getList(param, (resultCode, results) => {
+        if(resultCode != "success") {
+            res.send(resultCode);
         } else {
             res.send(results);
         }
@@ -28,9 +30,9 @@ router.get("/:board_id", (req, res) => {
         board_id: req.params.board_id
     };
 
-    boardRepo.getOne(param, (err, results) => {
-        if(err != "success") {
-            res.send(err);
+    boardRepo.getOne(param, (resultCode, results) => {
+        if(resultCode != "success") {
+            res.send(resultCode);
         } else {
             res.send(results);
         }
@@ -46,8 +48,8 @@ router.put("/", (req, res) => {
         use_fg: req.body.use_fg, 
     };
 
-    boardRepo.insert(param, (err, results) => {
-        if(err == "success") {
+    boardRepo.insert(param, (resultCode, results) => {
+        if(resultCode == "success") {
             res.send("success");
         } else {
             res.send("error");
@@ -65,8 +67,8 @@ router.post("/:board_id", (req, res) => {
         use_fg: req.body.use_fg
     }
 
-    boardRepo.update(param, (err, results) => {
-        if(err == "success") {
+    boardRepo.update(param, (resultCode, results) => {
+        if(resultCode == "success") {
             res.send("success");
         } else {
             res.send("error");
@@ -76,8 +78,8 @@ router.post("/:board_id", (req, res) => {
 
 // delete
 router.delete(":board_id", (req, res) => {
-    boardRepo.delete(param, (err, results) => {
-        if(err == "success") {
+    boardRepo.delete(param, (resultCode, results) => {
+        if(resultCode == "success") {
             res.send("success");
         } else {
             res.send("error");
