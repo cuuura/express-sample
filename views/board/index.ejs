@@ -18,43 +18,79 @@
 <div class="text-center">
     <ul class="pagination justify-content-center">
     </ul>
+    <input id="current-page" type="hidden" />
+    <input id="page-start" type="hidden" />
+    <input id="page-end" type="hidden" />
 </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js">
 </script>>
 <script>
-$("document").ready(function(){
-    $.ajax({
-        url: "/board",
-        data: {current_page: "0", page_size: "5"},
-        method: "GET",
-        dataType: "json"
-    })
-    .done(function(json) {
-        json["list"].forEach(function (data) {
-            $("<tr><td class='text-center'>" + data.board_id + "</td><td class='text-center'>" + data.title + "</td><td class='text-center'>" + data.name + "</td><td class='text-center'>" + data.edited_at + "</td>").appendTo("tbody");
+    $("document").ready(function(){
+        getBoardList({current_page: "0", page_size: "5"});
+    });
+
+    function getBoardList(param) {
+        $.ajax({
+            url: "/board",
+            data: param,
+            method: "GET",
+            dataType: "json"
+        })
+        .done(function(json) {
+            $("tbody").empty();
+            $(".pagination").empty();
+
+            json["list"].forEach(function (data) {
+                // $("<tr><td class='text-center'>" + data.board_id + "</td><td class='text-center'>" + data.title + "</td><td class='text-center'>" + data.name + "</td><td class='text-center'>" + data.edited_at + "</td>").appendTo("tbody");
+                var row = $("<tr>").appendTo("tBody");
+                $("<td>").addClass("text-center").text(data.board_id).appendTo(row);
+                $("<td>").addClass("text-center").text(data.title).appendTo(row);
+                $("<td>").addClass("text-center").text(data.name).appendTo(row);
+                $("<td>").addClass("text-center").text(data.edited_at).appendTo(row);
+            });
+
+            var currentPage = json["current_page"];
+            $("#current-page").empty().text(json["current_page"]);
+            var pageStart = json["page_start"];
+            $("#page-start").empty().text(json["page_start"]);
+            var pageEnd = json["page_end"];
+            $("#page-end").empty().text(json["page_start"]);
+
+            for(var idx = pageStart; idx <= pageEnd; idx++) {
+                if(idx == pageStart) {
+                    // $("<li class='page-item'><a class='page-link' href='#'>Previous</a></li>").appendTo(".pagination");
+                    var pageItem = $("<li>").addClass("page-item").appendTo(".pagination");
+                    $("<a>").addClass("page-link").prop("href", "#").text("Previous").appendTo(pageItem);
+                }
+                var pageNum = idx + 1;
+
+                if(idx == currentPage) {
+                    // $("<li class='page-item active'><a class='page-link' href='#'>" + pageNum + "</a></li>").appendTo(".pagination");
+                    var pageItem = $("<li>").addClass("page-item").appendTo(".pagination");
+                    $("<a>").addClass("page-link").addClass("active").prop("href", "#").text(pageNum).appendTo(pageItem);
+                } else {
+                    // $("<li class='page-item'><a class='page-link' href='#'>" + pageNum + "</a></li>").appendTo(".pagination");
+                    var pageItem = $("<li>").addClass("page-item").appendTo(".pagination");
+                    $("<a>").addClass("page-link").prop("href", "#").text(pageNum).appendTo(pageItem);
+                }
+
+                if(idx == pageEnd) {
+                    // $("<li class='page-item'><a class='page-link' href='#'>Next</a></li>").appendTo(".pagination"); 
+                    var pageItem = $("<li>").addClass("page-item").appendTo(".pagination");
+                    $("<a>").addClass("page-link").prop("href", "#").text("Next").appendTo(pageItem);
+                }
+            }
         });
+    }
 
-        var currentPage = json["current_page"];
-        var pageStart = json["page_start"];
-        var pageEnd = json["page_end"];
-
-        for(var idx = pageStart; idx <= pageEnd; idx++) {
-            if(idx == pageStart) {
-                $("<li class='page-item'><a class='page-link' href='#'>Previous</a></li>").appendTo(".pagination");
-            }
-            var pageNum = idx + 1;
-
-            if(idx == currentPage) {
-                $("<li class='page-item active'><a class='page-link' href='#'>" + pageNum + "</a></li>").appendTo(".pagination");
-            } else {
-                $("<li class='page-item'><a class='page-link' href='#'>" + pageNum + "</a></li>").appendTo(".pagination");
-            }
-
-            if(idx == pageEnd) {
-                $("<li class='page-item'><a class='page-link' href='#'>Next</a></li>").appendTo(".pagination"); 
+    $(document).on("click", ".page-link", function(){
+        var pageIndex = $(this).text();
+        if(parseInt(pageIndex) > 0) {
+            if(parseInt(pageIndex) > 0) {
+                getBoardList({current_page:pageIndex, })
             }
         }
-    })
-});
+    });
+
 </script>

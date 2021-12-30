@@ -11,7 +11,7 @@ function makewhere(param) {
         whereStr += "AND title LIKE CONCAT('%', :title, '%') ";
     }
     if("user_id" in param && param.user_id != null && param.user_id != "") {
-        whereStr += "AND user_id LIKE CONCAT('%', :user_id, '%') ";
+        whereStr += "AND user_id = :user_id ";
     }
     if("contents" in param && param.contents != null && param.contents != "") {
         whereStr += "AND contents LIKE CONCAT('%', :contents, '%') ";
@@ -23,12 +23,12 @@ function makewhere(param) {
         whereStr += "AND edited_at = :edited_at ";
     }
     if(whereStr.length > 0) {
-        whereStr = limitStr + "WHERE" + whereStr.substring(3);
+        whereStr = "WHERE" + whereStr.substring(3);
     }
 
     var limitStr = "";
 
-    if("current_page" in param && typeof parseInt(param.current_page) == "number" && "page_size" in param && typeof parseInt(param.page_size) == "number") {
+    if("current_page" in param && parseInt(param.current_page) != "NaN" && typeof parseInt(param.current_page) == "number" && "page_size" in param && typeof parseInt(param.page_size) == "number") {
         limitStr = "LIMIT " + (parseInt(param.current_page) * parseInt(param.page_size)) + ", " + parseInt(param.page_size) + " ";
     }
 
@@ -61,7 +61,8 @@ module.exports = {
                           FROM tb_board b\
                           LEFT\
                           JOIN tb_user u\
-                            ON b.user_id = u.user_id "
+                            ON b.user_id = u.user_id ";
+            queryStr+= " ORDER BY b.board_id DESC ";
             queryStr+= makewhere(param);
 
         console.log(queryStr);
@@ -107,15 +108,15 @@ module.exports = {
     
     getOne: function (param, done) {
         var queryStr = "SELECT b.board_id \
-        , b.title\
-        , b.user_id\
-        , u.name\
+                             , b.title\
+                             , b.user_id\
+                             , u.name\
                              , b.use_fg\
                              , b.edited_at\
                           FROM tb_board b\
                           LEFT\
                           JOIN tb_user u\
-                            ON b.user_id = u.user_id";
+                            ON b.user_id = u.user_id ";
             queryStr+= makewhere(param);
 
         console.log(queryStr);
@@ -151,6 +152,13 @@ module.exports = {
 
         db.execute(queryStr, param, (resultCode, results) => {
             if(resultCode == "success" && results > 0) {
+                var selectLastOne = "SELECT title\
+                                          , user_id\
+                                          , use_fg\
+                                          , edited_at\
+                                       FROM tb_board";
+                    selectLastOne+= makewhere(param);
+
                 this.getOne(param, (resultCode, results) => {
                     if(resultCode == "success") {
                         done(resultCode, results);
@@ -158,6 +166,7 @@ module.exports = {
                         done(resultCode, null);
                     }
                 });
+                // done(resultCode, results);
             } else {
                 done(resultCode, results);
             }
