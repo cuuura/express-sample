@@ -7,8 +7,15 @@ const pstmt = require("yesql").mysql;
 //     password: "test_user123",
 // })
 
+//const pool = mysql.createPool({
+//    host: "localhost",
+//    database: "example_db",
+//    user: "test_user",
+//    password: "test_user123",
+//    connectionLimit : 10
+//});
 const pool = mysql.createPool({
-    host: "localhost",
+    host: "192.168.0.21",
     database: "example_db",
     user: "test_user",
     password: "test_user123",

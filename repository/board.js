@@ -69,10 +69,10 @@ module.exports = {
 
         // Number
         // default : 0
-        var currentPage = "current_page" in param && param.current_page != null && param.current_page != "" && typeof parseInt(param.current_page) == "number"? param.current_page: "0";
+        var currentPage = "current_page" in param && param.current_page != null && param.current_page != "" && parseInt(param.current_page) != "NaN" && typeof parseInt(param.current_page) == "number"? param.current_page: "0";
         // Number
         // default : 5
-        var pageSize = "page_size" in param && param.page_size != null && param.page_size != "" && typeof parseInt(param.page_num) == "number"? param.page_size: "5";
+        var pageSize = "page_size" in param && param.page_size != null && param.page_size != "" && parseInt(param.page_num) != "NaN" && typeof parseInt(param.page_num) == "number"? param.page_size: "5";
         param["page_size"] = pageSize;
         param["current_page"] = currentPage;
 

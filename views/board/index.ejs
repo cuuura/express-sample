@@ -67,7 +67,7 @@
 
                 if(idx == currentPage) {
                     // $("<li class='page-item active'><a class='page-link' href='#'>" + pageNum + "</a></li>").appendTo(".pagination");
-                    var pageItem = $("<li>").addClass("page-item").appendTo(".pagination");
+                    var pageItem = $("<li>").addClass("page-item").addClass("active").appendTo(".pagination");
                     $("<a>").addClass("page-link").addClass("active").prop("href", "#").text(pageNum).appendTo(pageItem);
                 } else {
                     // $("<li class='page-item'><a class='page-link' href='#'>" + pageNum + "</a></li>").appendTo(".pagination");
@@ -91,6 +91,20 @@
         if(parseInt(pageIndex) >= 0) {
             if(parseInt(pageIndex) < parseInt(pageEnd)) {
                 getBoardList({current_page:pageIndex, page_size: "5"});
+            }
+        } else {
+            if($(this).text() == "Next") {
+                if(++pageIndex <= pageEnd) {
+                    getBoardList({current_page:++pageIndex, page_size:"5"});
+                } else {
+                    alert("현재 끝 페이지입니다.");
+                }
+            } else if ($(this).text() == "Previous") {
+                if(--pageIndex >= pageStart) {
+                    getBoardList({current_page:--pageIndex, page_size:"5"});
+                } else {
+                    alert("현재 시작 페이지입니다.");
+                }
             }
         }
     });

@@ -1,0 +1,24 @@
+<script src="https://code.jquery.com/jquery-3.4.1.min.js">
+</script>>
+<script>
+    $("document").attr("title", "<%= menuTitle %>");
+    $("document").ready(function(){
+        
+    });
+
+    function getOne(param) {
+        $.ajax({
+            url: "/board" + param.board_id,
+            data: param,
+            method: "GET",
+            dataType: "json"
+        })
+        .done(function(json){
+            var title = json.title;
+            var userId = json.user_id;
+            var userName = json.name;
+            var contents = json.contents;
+            var editedAt = json.edited_at;
+        });
+    }
+</script>
