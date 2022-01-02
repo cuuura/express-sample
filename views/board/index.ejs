@@ -50,8 +50,8 @@
                 $("<td>").addClass("text-center").text(data.edited_at).appendTo(row);
             });
 
-            var currentPage = parseInt(json["current_page"]) - 1;
-            $("#current-page").empty().val(json["current_page"]);
+            var currentPage = parseInt(json["current_page"]);
+            $("#current-page").empty().val(currentPage);
             var pageStart = json["page_start"];
             $("#page-start").empty().val(pageStart);
             var pageEnd = json["page_end"];
@@ -67,7 +67,7 @@
 
                 if(idx == currentPage) {
                     // $("<li class='page-item active'><a class='page-link' href='#'>" + pageNum + "</a></li>").appendTo(".pagination");
-                    var pageItem = $("<li>").addClass("page-item").addClass("active").appendTo(".pagination");
+                    var pageItem = $("<li>").addClass("page-item").appendTo(".pagination");
                     $("<a>").addClass("page-link").addClass("active").prop("href", "#").text(pageNum).appendTo(pageItem);
                 } else {
                     // $("<li class='page-item'><a class='page-link' href='#'>" + pageNum + "</a></li>").appendTo(".pagination");
@@ -86,21 +86,22 @@
 
     $(document).on("click", ".page-link", function(){
         var pageIndex = parseInt($(this).text()) - 1;
-        var pageStart = $("#page-start").val();
-        var pageEnd = $("#page-end").val();
-        if(parseInt(pageIndex) >= 0) {
-            if(parseInt(pageIndex) < parseInt(pageEnd)) {
+        var currentPage = parseInt($(this).val()) - 1;
+        var pageStart = parseInt($("#page-start").val());
+        var pageEnd = parseInt($("#page-end").val());
+        if(pageIndex >= 0) {
+            if(pageIndex <= pageEnd) {
                 getBoardList({current_page:pageIndex, page_size: "5"});
             }
         } else {
             if($(this).text() == "Next") {
-                if(++pageIndex <= pageEnd) {
+                if(++pageIndex < pageEnd) {
                     getBoardList({current_page:++pageIndex, page_size:"5"});
                 } else {
                     alert("현재 끝 페이지입니다.");
                 }
             } else if ($(this).text() == "Previous") {
-                if(--pageIndex >= pageStart) {
+                if(--pageIndex > pageStart) {
                     getBoardList({current_page:--pageIndex, page_size:"5"});
                 } else {
                     alert("현재 시작 페이지입니다.");

@@ -98,7 +98,7 @@ module.exports = {
                     returnObj["current_page"] = results[0].current_page;
                     returnObj["total_page"] = results[0].total_page;
                     returnObj["page_start"] = results[0].page_start;
-                    returnObj["page_end"] = results[0].total_page - 1 > results[0].page_end? results[0].page_end: results[0].total_page - 1;
+                    returnObj["page_end"] = results[0].total_page - 1 >= results[0].page_end? results[0].page_end: results[0].total_page - 1;
                 }
 
                 done(resultCode, returnObj);
@@ -159,14 +159,14 @@ module.exports = {
                                        FROM tb_board";
                     selectLastOne+= makewhere(param);
 
-                this.getOne(param, (resultCode, results) => {
-                    if(resultCode == "success") {
-                        done(resultCode, results);
-                    } else {
-                        done(resultCode, null);
-                    }
-                });
-                // done(resultCode, results);
+                // this.getOne(param, (resultCode, results) => {
+                //     if(resultCode == "success") {
+                //         done(resultCode, results);
+                //     } else {
+                //         done(resultCode, null);
+                //     }
+                // });
+                done(resultCode, results);
             } else {
                 done(resultCode, results);
             }

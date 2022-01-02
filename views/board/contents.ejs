@@ -1,14 +1,34 @@
+<%-- 입력 폼 --%>
+<form action="writerAction" method="post">
+	<input type="text" id="title" name="title" class="form-control mt-4 mb-2"
+		placeholder="제목을 입력해주세요." required
+	>
+    <input type="text" id="userId" name="user_id" class="form-control mt-4 mb-2"
+        placeholder="유저 ID" required
+    >
+    <input type="text" id="editedAt" name="edited_at" class="form-control mt-4 mb-2"
+    >
+	<div class="form-group">
+		<textarea class="form-control" rows="10" id="contents" name="contents"
+			placeholder="내용을 입력해주세요" required
+		></textarea>
+	</div>
+	<button type="submit" class="btn btn-secondary mb-3">제출하기</button>
+</form>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js">
 </script>>
 <script>
     $("document").attr("title", "<%= menuTitle %>");
     $("document").ready(function(){
-        
+        var boardId = "<%= board_id %>";
+        if(parseInt(boardId) >= 0) {
+            getOne({board_id});
+        }
     });
 
     function getOne(param) {
         $.ajax({
-            url: "/board" + param.board_id,
+            url: "/board/" + param.board_id,
             data: param,
             method: "GET",
             dataType: "json"
@@ -19,6 +39,38 @@
             var userName = json.name;
             var contents = json.contents;
             var editedAt = json.edited_at;
+
+            $("#title").val(title);
+            $("#userId").val(userId);
+            $("#editedAt").val(editedAt);
+            $("#contents").val(contents);
+        });
+    }
+
+    function insertBoard(param) {
+        $.ajax({
+            url: "/board",
+            data: param,
+            method: "PUT",
+            dataType: "json"
+        })
+        .done(function(json) {
+            var title = json.title;
+            var userId = json.user_id;
+            var userName = json.name;
+            var contents = json.contents;
+            var editedAt = json.edited_at;
+        });
+    }
+
+    function updateBoard(param) {
+        $.ajax({
+            url: "/board/" + param.board_id,
+            data: param,
+            method: "POST",
+            dataType: "json"
+        })
+        .done(function(json) {
         });
     }
 </script>
