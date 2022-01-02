@@ -26,7 +26,8 @@ router.get("/:board_id", (req, res) => {
 
 router.get("/write", (req, res) => {
     var param = {
-        menuTitle: "글쓰기"
+        menuTitle: "글쓰기",
+        board_id: ""
     }
     res.render("board/contents", param);
 })

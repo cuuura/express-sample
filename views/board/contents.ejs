@@ -1,5 +1,5 @@
 <%-- 입력 폼 --%>
-<form action="writerAction" method="post">
+<form>
 	<input type="text" id="title" name="title" class="form-control mt-4 mb-2"
 		placeholder="제목을 입력해주세요." required
 	>
@@ -13,7 +13,7 @@
 			placeholder="내용을 입력해주세요" required
 		></textarea>
 	</div>
-	<button type="submit" class="btn btn-secondary mb-3">제출하기</button>
+	<button id="submitBtn" type="submit" class="btn btn-secondary mb-3">글쓰기</button>
 </form>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js">
 </script>>
@@ -22,7 +22,7 @@
     $("document").ready(function(){
         var boardId = "<%= board_id %>";
         if(parseInt(boardId) >= 0) {
-            getOne({board_id});
+            getOne({board_id: boardId});
         }
     });
 
@@ -44,6 +44,9 @@
             $("#userId").val(userId);
             $("#editedAt").val(editedAt);
             $("#contents").val(contents);
+
+            $("form").append($("<button>").attr("id", "updateBtn").addClass("btn btn-secondary mb-3").text("삭제하기"));
+            $("#submitBtn").text("수정하기");
         });
     }
 
@@ -55,11 +58,11 @@
             dataType: "json"
         })
         .done(function(json) {
-            var title = json.title;
-            var userId = json.user_id;
-            var userName = json.name;
-            var contents = json.contents;
-            var editedAt = json.edited_at;
+            if(json == "success") {
+                alert("삽입되었습니다.");
+            } else {
+                alert("오류가 발생하였습니다.");
+            }
         });
     }
 
@@ -71,6 +74,27 @@
             dataType: "json"
         })
         .done(function(json) {
+            if(json == "success") {
+                alert("업데이트 되었습니다.")
+            } else {
+                alert("오류가 발생하였습니다.");
+            }
         });
+    }
+
+    function deleteBoard(param) {
+        $.ajax({
+            url: "/board/" + param.board_id,
+            data: param,
+            method: "DELETE",
+            dataType: "json"
+        })
+        .done(function(json){
+            if(json == "success") {
+                alert("삭제되었습니다.");
+            } else {
+                alert("오류가 발생하였습니다.");
+            }
+        })
     }
 </script>
