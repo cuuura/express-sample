@@ -111,6 +111,7 @@ module.exports = {
                              , b.title\
                              , b.user_id\
                              , u.name\
+                             , b.contents\
                              , b.use_fg\
                              , b.edited_at\
                           FROM tb_board b\

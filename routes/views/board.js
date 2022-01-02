@@ -15,10 +15,10 @@ router.get("/", (req, res) => {
 });
 
 // get one
-router.get("/:board_id", (req, res) => {
+router.get("/:boardId", (req, res) => {
     var param = {
         menuTitle: "게시글 보기",
-        board_id: req.params.board_id
+        boardId: req.params.boardId
     };
 
     res.render("board/contents", param);
